@@ -1,4 +1,5 @@
-import allure_commons._allure
+import allure
+import allure_commons
 import pytest
 from appium.options.android import UiAutomator2Options
 from selene import browser, support
@@ -36,5 +37,16 @@ def mobile_management():
     browser.config._wait_decorator = support._logging.wait_with(context=allure_commons._allure.StepContext)
 
     yield
+
+    allure.attach(
+        browser.driver.get_screenshot_as_png(),
+        name='screenshot',
+        attachment_type=allure.attachment_type.PNG
+    )
+    allure.attach(
+        browser.driver.page_source,
+        name='screen xml dump',
+        attachment_type=allure.attachment_type.XML
+    )
 
     browser.quit()
